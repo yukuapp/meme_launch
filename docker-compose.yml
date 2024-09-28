@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  mysql:
+    image: mysql
+    container_name: mysql
+    hostname: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=bts123456
+    networks:
+      - mynetwork
+    command: ["--max_connections=8888"]
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    hostname: app
+    ports:
+      - 5001:5001
+    depends_on:
+      - mysql
+    restart: always
+    environment:
+      - DATABASE_URL=mysql://root:bts123456@mysql:3306/memelaunch?pool_timeout=60
+      - PORT=5001
+    networks:
+      - mynetwork
+      
+networks:
+  mynetwork:
+    driver: bridge

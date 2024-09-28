@@ -1,0 +1,22 @@
+# Various IDEs and Editors
+.vessel/
+.vscode/
+.idea/
+**/*~
+logs/
+# Mac OSX temporary files
+.DS_Store
+**/.DS_Store
+# dfx temporary files
+.dfx/
+# canister_ids.json
+# frontend code
+node_modules/
+dist/
+.env
+
+#vessel files
+
+#other
+# src/service/ledger.mo
+# src/service/block.mo

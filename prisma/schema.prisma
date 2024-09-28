@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prismaschema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id                Int                 @id @default(autoincrement())
+  telegram_id       String              @unique
+  name              String
+  first_name        String
+  last_name         String?
+  avatar            String
+  address           String              @unique
+  register_date     DateTime            @default(now())
+  meme_token        meme_token[]
+  meme_token_events meme_token_events[]
+  meme_token_holder meme_token_holder[]
+}
+
+model meme_token {
+  id           Int      @id @default(autoincrement())
+  name         String
+  symbol       String
+  image        Bytes
+  description  String?
+  telegram     String?
+  token        String   @unique
+  creator      String
+  create_time  DateTime @default(now())
+  total_supply Int      @default(1000000000)
+  decimal      Int      @default(18)
+  market_cap   Decimal @db.Decimal(36, 18) @default(0)
+  completed    Boolean  @default(false)
+  swap_poll    String?
+  user         user?    @relation(fields: [creator], references: [address])
+}
+
+enum EventType {
+  SELL
+  BUY
+  TRANSFER
+}
+
+model meme_token_events {
+  id           Int       @id @default(autoincrement())
+  transaction  String
+  token        String
+  eth_amount   Decimal   @db.Decimal(36, 18)
+  token_amount Decimal   @db.Decimal(36, 18)
+  address      String
+  timestamp    DateTime
+  type         EventType
+  user         user?     @relation(fields: [address], references: [address])
+
+  @@index([token, timestamp])
+}
+
+model meme_token_holder {
+  id      Int     @id @default(autoincrement())
+  token   String
+  address String
+  amount  Decimal @db.Decimal(36, 18)
+  user    user?   @relation(fields: [address], references: [address])
+
+  @@unique([token, address])
+}
+
+model meme_token_price {
+  id        Int      @id @default(autoincrement())
+  token     String
+  timestamp BigInt
+  open      Decimal  @db.Decimal(36, 18)
+  high      Decimal  @db.Decimal(36, 18)
+  low       Decimal  @db.Decimal(36, 18)
+  close     Decimal  @db.Decimal(36, 18)
+}
+
+model system_setting {
+  id          Int    @id @default(autoincrement())
+  category    String
+  value       String
+  description String
+  update      String
+}
+
+model price {
+  id           Int     @id @default(autoincrement())
+  token_symbol String
+  price        Decimal @db.Decimal(10, 4)
+  date         String
+
+  @@unique([token_symbol, date])
+}

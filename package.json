@@ -1,0 +1,50 @@
+{
+  "name": "meme_launch",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": "",
+  "author": "jayz",
+  "license": "MIT",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "4.13.0",
+    "bignumber.js": "^4.0.4",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "ethers": "^4.0.0",
+    "js-sha256": "^0.11.0",
+    "json-bigint": "^1.0.0",
+    "jsonwebtoken": "^9.0.1",
+    "koa": "^2.13.4",
+    "koa-body": "^5.0.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-cache": "^0.1.0",
+    "koa-cache-control": "^2.0.0",
+    "koa-helmet": "^6.1.0",
+    "koa-jwt": "^4.0.4",
+    "koa-router": "^12.0.0",
+    "koa-static-cache": "^5.1.4",
+    "koa2-cors": "^2.0.6",
+    "koa2-swagger-ui": "^5.10.0",
+    "log4js": "^6.6.1",
+    "moment": "^2.30.1",
+    "node-fetch": "^2.6.1",
+    "node-schedule": "^2.1.1",
+    "redis": "^4.2.0",
+    "swagger-jsdoc": "^6.2.8",
+    "util": "^0.12.5"
+  },
+  "scripts": {
+    "start": "nodemon app.js",
+    "db:build": "npx prisma db push",
+    "db:generate": "npx prisma generate",
+    "db:commit": "npx prisma migrate dev --preview-feature",
+    "db:clean": "prisma migrate reset --preview-feature"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "prisma": "^4.13.0"
+  }
+}
